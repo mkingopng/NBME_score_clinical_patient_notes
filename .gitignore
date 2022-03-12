@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/data/
+/t/
+/deberta_v2_3_fast_tokenizer/
+/wandb_creds.py
+/db_v2_3_fast_tokenizer/
+/deberta_v2/
+/notebooks/
