@@ -134,3 +134,9 @@ dmypy.json
 /db_v2_3_fast_tokenizer/
 /deberta_v2/
 /notebooks/
+/deberta-v2-3-fast-tokenizer/
+/transformers/
+/deberta-v3-base/
+/eda/
+/inference/
+/train/

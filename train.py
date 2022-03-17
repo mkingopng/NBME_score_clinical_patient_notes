@@ -176,22 +176,18 @@ print(merged.head())
 # `label_start, label_end` are the start and end indexes of the label. start is inclusive, end is exclusive, just like
 # indexing a string.
 
-# 1. `token_start <= label_start < token_end`
-# The token span overlaps with the start of the label span.
+# 1. `token_start <= label_start < token_end` The token span overlaps with the start of the label span.
 
-# 2. `token_start < label_end <= token_end`
-# The token span overlaps with the end of the label span.
+# 2. `token_start < label_end <= token_end` The token span overlaps with the end of the label span.
 
-# 3. `label_start <= token_start < label_end`
-# If it doesn't fall into (1) or (2), then the token span is entirely in the label span.
+# 3. `label_start <= token_start < label_end`. If it doesn't fall into (1) or (2), then the token span is entirely in
+# the label span.
 
 merged["feature_text"] = [process_feature_text(x) for x in merged["feature_text"]]
 
 # Double-checking alignment is good
 if "deberta-v2" in model_args.model_name_or_path or "deberta-v3" in model_args.model_name_or_path:
-    from transformers.models.deberta_v2 import DebertaV2TokenizerFast
-
-    tokenizer = DebertaV2TokenizerFast.from_pretrained(model_args.model_name_or_path)
+    tokenizer = DebertaV2TokenizerFast
 else:
     tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path)
 
@@ -203,7 +199,7 @@ example = {
     "annotations": first.anno_list,
 }
 print(example, "\n\n")
-tokenized = partial(tokenize_and_add_labels, tokenizer=tokenizer)(example)
+tokenized = partial(tokenize_and_add_labels, tokenizer=tokenizer)(example)  # fix_me
 
 tokens = tokenizer.tokenize(example["feature_text"], example["text"], add_special_tokens=True)
 
@@ -224,13 +220,8 @@ if DEBUG:
     dataset = dataset.shuffle().select(range(1000))
 
 # This can take up to a minute
-tokenized_dataset = dataset.map(
-    partial(
-        tokenize_and_add_labels,
-        tokenizer=tokenizer),
-    desc="Tokenizing and adding labels",
-    num_proc=4
-)
+tokenized_dataset = dataset.map(partial(tokenize_and_add_labels, tokenizer=tokenizer),
+                                desc="Tokenizing and adding labels", num_proc=4)
 
 print(tokenized_dataset)
 
@@ -243,9 +234,8 @@ print("The longest is", max(tokenized_lengths))
 
 px.histogram(x=tokenized_lengths, labels={"x":"tokenized_length"})
 
-# Setup Weights and Biases for tracking experiments
-# If you put report_to="none" in the TrainingArguments then it won’t use Weights and Biases.
-# I like using it because it helps keep track of experiments.
+# Setup Weights and Biases for tracking experiments If you put report_to="none" in the TrainingArguments then it won’t
+# use Weights and Biases. I like using it because it helps keep track of experiments.
 
 wandb.login(key=API_KEY)
 
