@@ -1,196 +1,99 @@
 """
 
 """
-# The following is necessary if you want to use the fast tokenizer for deberta v2 or v3
-
+# libraries
 import os
-from datetime import datetime
-from collections import Counter
-from pathlib import Path
-from dataclasses import dataclass, field
-from typing import Optional
-from itertools import chain
-from functools import partial
-from ast import literal_eval
-import shutil
+import gc
+import re
+import ast
+import sys
+import copy
+import json
+import time
+import math
+import string
+import pickle
+import random
+import joblib
+import itertools
+import warnings
 import wandb
-from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import precision_recall_fscore_support
 
-import torch
-
-
-import pandas as pd
+from IPython.core.display_functions import display
+import scipy as sp
 import numpy as np
-
-import plotly.express as px
-import plotly.offline as pyo
-
-from datasets import load_dataset
-from datasets import Dataset
-
-
-from HUGGINGFACE import *
-
-import transformers
-from transformers.modeling_outputs import TokenClassifierOutput
-import os
-from datetime import datetime
-from collections import Counter
-from pathlib import Path
-from dataclasses import dataclass, field
-from typing import Optional
-from itertools import chain
-from functools import partial
-from ast import literal_eval
-
+import pandas as pd
+from tqdm.auto import tqdm
+from sklearn.metrics import f1_score
+from sklearn.model_selection import StratifiedKFold, GroupKFold, KFold
 import torch
-from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import precision_recall_fscore_support
+import torch.nn as nn
+from torch.nn import Parameter
+import torch.nn.functional as F
+from torch.optim import Adam, SGD, AdamW
+from torch.utils.data import DataLoader, Dataset
+import tokenizers
+import transformers
+from transformers import AutoTokenizer, AutoModel, AutoConfig
+from transformers import get_linear_schedule_with_warmup, get_cosine_schedule_with_warmup
+from transformers import AutoModel, DistilBertTokenizerFast
 
-from datasets import load_dataset, Dataset
+# constants
+MODEL = AutoModel.from_pretrained('distilbert-base-uncased')
+TOKENIZER = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
+CONFIG = AutoConfig.from_pretrained('distilbert-base-uncased')
+OUTPUT_DIR = 'output_dir'
+SEED = 42
+DATA_DIR = 'data'
+TRAIN = pd.read_csv(os.path.join(DATA_DIR, 'train.csv'))
+FEATURES = pd.read_csv(os.path.join(DATA_DIR, 'features.csv'))
+TEST = pd.read_csv(os.path.join(DATA_DIR, 'test.csv'))
+PATIENT_NOTES = pd.read_csv(os.path.join(DATA_DIR, 'patient_notes.csv'))
 
-from transformers import (
-    AutoConfig,
-    AutoTokenizer,
-    DataCollatorForTokenClassification,
-    HfArgumentParser,
-    Trainer,
-    TrainingArguments,
-    set_seed,
-    logging,
-)
 
-from transformers.modeling_outputs import TokenClassifierOutput
+# configuration
+class CONFIGURATION:
+    wandb = False
+    competition = 'NBME'
+    _wandb_kernel = 'mkingo'
+    debug = False
+    apex = True
+    print_freq = 100
+    num_workers = 4
+    model = MODEL
+    tokenizer = TOKENIZER
+    config = CONFIG
+    scheduler = 'cosine'  # ['linear', 'cosine']
+    batch_scheduler = True
+    num_cycles = 0.5
+    num_warmup_steps = 0
+    epochs = 5
+    encoder_lr = 2e-5  # mk: the use of encoder & decoder implies that this isn't straight NER
+    decoder_lr = 2e-5
+    min_lr = 1e-6
+    eps = 1e-6
+    betas = (0.9, 0.999)
+    batch_size = 4
+    fc_dropout = 0.2
+    max_len = 512
+    weight_decay = 0.01
+    gradient_accumulation_steps = 1
+    max_grad_norm = 1000
+    seed = 42
+    n_fold = 5
+    trn_fold = [0]
+    train = True
 
-# enviroment
-logging.set_verbosity(logging.WARNING)
+
+if CONFIGURATION.debug:
+    CONFIGURATION.epochs = 2
+    CONFIGURATION.trn_fold = [0]
+
+
+# options
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
+warnings.filterwarnings("ignore")
 TOKENIZERS_PARALLELISM = True
-HF_DATASETS_OFFLINE = 1
-TRANSFORMERS_OFFLINE = 1
-DEBUG = False
-
-# directories & files
-tokenizer_dir = 'deberta-v2-3-fast-tokenizer'
-convert_file = os.path.join(tokenizer_dir, "convert_slow_tokenizer.py")
-deberta_v2 = DEBERTA_V2
-DebertaV2TokenizerFast = 'deberta-v2-3-fast-tokenizer/tokenization_deberta_v2_fast'
-
-model = DEBERTA_V3
-all_models = [model] * 5
-
-@dataclass
-class ModelArguments:
-    """
-    Arguments pertaining to which model/config/tokenizer we are going to fine-tune from.
-    """
-
-    model_name_or_path: str = field(
-        metadata={"help": "Path to pretrained model or model identifier from huggingface.co/models"}
-    )
-
-
-@dataclass
-class DataTrainingArguments:
-    """
-    Arguments pertaining to what data we are going to input our model for training and eval.
-    """
-    k_folds: int = field(
-        default=5,
-        metadata={"help": "How many folds for kfold validation"}
-    )
-    val_split_percentage: Optional[float] = field(
-        default=None,
-        metadata={"help": "How much of the data to use for doing train_test_split. If None, already assumes "
-                          "there are separate traiin and validation files"},
-    )
-    preprocessing_num_workers: Optional[int] = field(
-        default=None,
-        metadata={"help": "The number of processes to use for the preprocessing."},
-    )
-    max_seq_length: int = field(
-        default=None,
-        metadata={
-            "help": "The maximum total input sequence length after tokenization. If set, sequences longer "
-                    "than this will be truncated, sequences shorter will be padded."
-        },
-    )
-    pad_to_max_length: bool = field(
-        default=False,
-        metadata={
-            "help": "Whether to pad all samples to model maximum sentence length. "
-                    "If False, will pad the samples dynamically when batching to the maximum length in the batch. More "
-                    "efficient on GPU but very bad for TPU."
-        },
-    )
-    max_train_samples: Optional[int] = field(
-        default=None,
-        metadata={
-            "help": "For debugging purposes or quicker training, truncate the number of training examples to this "
-                    "value if set."
-        },
-    )
-    max_eval_samples: Optional[int] = field(
-        default=None,
-        metadata={
-            "help": "For debugging purposes or quicker training, truncate the number of evaluation examples to this "
-                    "value if set."
-        },
-    )
-    max_predict_samples: Optional[int] = field(
-        default=None,
-        metadata={
-            "help": "For debugging purposes or quicker training, truncate the number of prediction examples to this "
-                    "value if set."
-        },
-    )
-    label_all_tokens: bool = field(
-        default=False,
-        metadata={
-            "help": "Whether to put the label for one word on all tokens of generated by that word or just on the "
-                    "one (in which case the other tokens will have a padding index)."
-        },
-    )
-    return_entity_level_metrics: bool = field(
-        default=False,
-        metadata={"help": "Whether to return all the entity levels during evaluation or just the overall ones."},
-    )
-
-
-model_args = ModelArguments(model_name_or_path=all_models[0])
-
-data_args = DataTrainingArguments(
-    k_folds=5,
-    max_seq_length=512,
-    pad_to_max_length=False,
-    preprocessing_num_workers=4,
-)
-
-training_args = TrainingArguments(
-    output_dir="model",
-    do_train=True,
-    do_eval=True,
-    do_predict=True,
-    per_device_train_batch_size=16,
-    per_device_eval_batch_size=32,
-    gradient_accumulation_steps=2,
-    learning_rate=2e-5,
-    weight_decay=0.01,
-    num_train_epochs=5,
-    lr_scheduler_type="linear",
-    warmup_ratio=0.1,
-    logging_steps=75,
-    evaluation_strategy="epoch",
-    save_strategy="no",
-    seed=18,
-    fp16=False,
-    report_to="wandb",
-    group_by_length=True,
-)
-
-set_seed(training_args.seed)
-
-data_dir = "data"
-feats_df = pd.read_csv(os.path.join(data_dir, "features.csv"))
-notes_df = pd.read_csv(os.path.join(data_dir, "patient_notes.csv"))
-train_df = pd.read_csv(os.path.join(data_dir, "train.csv"))
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

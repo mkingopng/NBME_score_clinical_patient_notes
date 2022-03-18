@@ -2,7 +2,7 @@
 This gives a useful stating point. It provides:
     - a benchmark evaluation metric
     - a method for creating folds
-    - train evaluate, inference and score a baseline of 0.568 without deep learning
+    - TRAIN evaluate, inference and score a baseline of 0.568 without deep learning
     - this gives a benchmark against which to measure more complex solutions
 """
 import os
@@ -21,9 +21,9 @@ K = 5
 SEED = 2222
 
 # data
-patient_notes = pd.read_csv(os.path.join(DATA_PATH, "patient_notes.csv"))
-features = pd.read_csv(os.path.join(DATA_PATH, "features.csv"))
-df_train = pd.read_csv(os.path.join(DATA_PATH, "train.csv"))
+patient_notes = pd.read_csv(os.path.join(DATA_PATH, "PATIENT_NOTES.csv"))
+features = pd.read_csv(os.path.join(DATA_PATH, "FEATURES.csv"))
+df_train = pd.read_csv(os.path.join(DATA_PATH, "TRAIN.csv"))
 
 #
 df_train['annotation'] = df_train['annotation'].apply(ast.literal_eval)
@@ -47,10 +47,10 @@ patient_notes = patient_notes[[
 """
 Folds
 There are two possibilities that come to my mind for splitting the data : 
-- A k-fold on features stratified by `case_num`
-- A k-fold on features grouped by `case_num`
+- A k-fold on FEATURES stratified by `case_num`
+- A k-fold on FEATURES grouped by `case_num`
 
-From my understanding, clinical cases will be the same in the train and test data, 
+From my understanding, clinical cases will be the same in the TRAIN and test data, 
 hence I'm going with the first option.
 """
 skf = StratifiedKFold(n_splits=K, random_state=SEED, shuffle=True)
@@ -135,7 +135,7 @@ def span_micro_f1(preds, truths):
     return micro_f1(bin_preds, bin_truths)
 
 
-# We generate spans from a train example.
+# We generate spans from a TRAIN example.
 
 spans = patient_notes['location'][0]
 spans = [[list(np.array(s.split(' ')).astype(int)) for s in span] for span in spans if len(span)]
@@ -165,7 +165,7 @@ def location_to_span(location):
 
 
 df = df_train.copy()
-patient_notes = pd.read_csv(os.path.join(DATA_PATH, "patient_notes.csv"))
+patient_notes = pd.read_csv(os.path.join(DATA_PATH, "PATIENT_NOTES.csv"))
 df = df.merge(patient_notes, how="left")
 
 

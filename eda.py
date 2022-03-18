@@ -6,7 +6,7 @@ from functions import *
 
 print(feats_df.head())
 
-# 131/143 of the features are unique, and it looks like some have OR delimiting multiple names
+# 131/143 of the FEATURES are unique, and it looks like some have OR delimiting multiple names
 len(feats_df), feats_df.feature_text.nunique()
 
 print(notes_df.head())
@@ -30,11 +30,11 @@ both_missing = (train_df["annotation"] == train_df["location"]) & missing_annota
 sum(missing_annotations), sum(missing_locations), sum(both_missing)
 # About 4.4k rows missing.
 
-# Looking at distribution of case numbers in train.csv
+# Looking at distribution of case numbers in TRAIN.csv
 px.histogram(train_df, x="case_num", color="case_num")
 
-# Looking at distribution of patient note numbers in train.csv
+# Looking at distribution of patient note numbers in TRAIN.csv
 px.histogram(train_df, x="pn_num", color="case_num")
 
-# Equal numbers of features for each case_num
+# Equal numbers of FEATURES for each case_num
 px.histogram(train_df, x="feature_num", color="case_num", nbins=1000)
