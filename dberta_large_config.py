@@ -1,8 +1,6 @@
 """
-Library imports
+libraries
 """
-import wandb
-from wandb_creds import *
 import os
 import gc
 import re
@@ -18,6 +16,7 @@ import random
 import joblib
 import itertools
 import warnings
+from IPython.core.display_functions import display
 import scipy as sp
 import numpy as np
 import pandas as pd
@@ -34,20 +33,23 @@ import tokenizers
 import transformers
 from transformers import AutoTokenizer, AutoModel, AutoConfig
 from transformers import get_linear_schedule_with_warmup, get_cosine_schedule_with_warmup
+import wandb
+from wandb_creds import *
+from transformers import AutoModel, DistilBertTokenizerFast
 
 """
-environmental variables
+constants & options
 """
-
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
 SEED = 42
-DATA_DIR = 'data'
-warnings.filterwarnings("ignore")
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+OUTPUT_DIR = 'EXPERIMENT_1_'  # increment for each iteration
+MODEL = AutoModel.from_pretrained('distilbert-base-uncased')
+TOKENIZER = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
-OUTPUT_DIR = 'experiment_14_'   # iterate for each experiment
+warnings.filterwarnings("ignore")
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 """
 CONFIGURATION
@@ -55,35 +57,35 @@ CONFIGURATION
 
 
 class CONFIGURATION:
-    apex = True
-    batch_scheduler = True
-    batch_size = 8  # > 12 reduces CV without meaningful speed increase. 4 improves CV, > 2x time. Use 8 as a benchmark
-    betas = (0.9, 0.999)
+    wandb = False
     competition = 'NBME'
-    decoder_lr = 4e-5  # try different LRs. started at 2e-5, 3e-5 seems better
+    _wandb_kernel = 'mkingo'
     debug = False
-    epochs = 10  # 10 is better. Longer may be better still
-    encoder_lr = 2e-5  # try different LRs
-    gradient_accumulation_steps = 1
-    min_lr = 1e-6  # try different LRs
-    eps = 1e-6
-    fc_dropout = 0.2  # try different
-    max_grad_norm = 1000  # try different
-    max_len = 512  # try different
-    model = "microsoft/deberta-base"
-    n_fold = 5  # 5 baseline
-    num_cycles = 0.5  # try different
-    num_warmup_steps = 0
-    num_workers = 4  # try different
+    apex = True
     print_freq = 100
-    weight_decay = 0.01  # try different
-    scheduler = 'cosine'  # try different scheduler ['linear', 'cosine']
-    seed = 42  # try different
-    trn_fold = [0, 1, 2, 3, 4]
+    num_workers = 4
+    model = MODEL
+    tokenizer = TOKENIZER
+    scheduler = 'cosine'  # ['linear', 'cosine']
+    batch_scheduler = True
+    num_cycles = 0.5
+    num_warmup_steps = 0
+    epochs = 5
+    encoder_lr = 2e-5
+    decoder_lr = 2e-5
+    min_lr = 1e-6
+    eps = 1e-6
+    betas = (0.9, 0.999)
+    batch_size = 4
+    fc_dropout = 0.2
+    max_len = 512
+    weight_decay = 0.01
+    gradient_accumulation_steps = 1
+    max_grad_norm = 1000
+    seed = 42
+    n_fold = 5
+    trn_fold = [0]
     train = True
-    tokenizer = AutoTokenizer.from_pretrained(model)
-    wandb = True
-    _wandb_kernel = ENTITY
 
 
 if CONFIGURATION.debug:

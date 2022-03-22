@@ -1,0 +1,151 @@
+Base HyperParameters to test
+- number of folds
+- number of epochs
+- batch size
+- decoder_lr
+- encoder_lr
+- min_lr
+
+
+Epochs Experiments
+
+Experiment 0: (to do)
+    - CV Score = CV = 0.
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+Experiment 1:
+    - CV Score = 0.8608
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+Experiment 2: (to do)
+    - CV Score = 0.8608
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+conclusion -> n_epochs=10 is best for training. (Consider higher once other optimisations are optimized)
+
+###############################################
+
+Batch Size Experiments (set folds = 5)
+
+Experiment 3: (to do)
+    - CV Score = 0.
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+Experiment 4: (re-run this with epochs = 10)
+    - CV Score = 0.8520
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 20
+
+Experiment 5: (to do)
+    - CV Score = 0.
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 16
+
+Experiment 6: (re-run this with folds = 5)
+    - CV Score = 0.8705
+    - n_folds = 10
+    - n_epochs = 10
+    - decoder_lr = 2e-5
+    - encoder_lr= 2e-5
+    - batch_size = 4
+
+Experiment 7: (re-run this with folds = 5, decoder_lr=2e-5)
+    - CV Score = 0.8723
+    - n_folds = 10
+    - n_epochs = 10
+    - decoder_lr = 3e-5
+    - encoder_lr = 2e-5
+    - batch_size = 4
+
+#####################################################
+
+Learning_rate experiments (set epochs=10, folds=5, batch_size=8)
+
+Experiment 8:
+    - CV Score = 0.8679
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 3e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+Experiment 9:
+    - CV Score = 0.8679
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 3e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+Experiment 10:
+    - CV Score = 0.8679
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 4e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+Experiment 11:
+    - CV =  0.8702
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 5e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+conclusion -> decoder_lr=5e-5 is best
+
+###################################
+
+experiment 12:
+    try to repeat the same performance with encoder lr=
+    - CV =  0.
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 5e-5
+    - encoder_lr = 3e-5
+    - batch_size = 8
+
+experiment 13: - encoder_lr = 3e-5
+
+experiment 14: - encoder_lr = 4e-5
+
+experiment 15: - encoder_lr = 4e-5
+
+experiment 16: - encoder_lr = 5e-5
+
+experiment 18: - encoder_lr = 5e-5
+
+conclusions ->
+
+######################
+
+experiment 19
+
+conclusions:
+    - 10+ epochs delivers better performance
+    - 10 folds gives better performance
+    - batch size 4 gives better performance
+    - decoder_lr = 5e-5 performs best

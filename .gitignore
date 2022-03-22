@@ -141,3 +141,4 @@ dmypy.json
 /inference/
 /train/
 /deberta_base_baseline/
+/output_dir/
