@@ -194,7 +194,7 @@ Experiment 8: 🗸
     - encoder_lr = 2e-5
     - batch_size = 8
 
-conclusiong -> increasing decoder_lr to 3e-5 =
+conclusion -> increasing decoder_lr to 3e-5 = better CV
 
 Experiment 9: (re-run)
     - CV Score = 0.
@@ -212,7 +212,7 @@ Experiment 10: 🗸
     - encoder_lr = 2e-5
     - batch_size = 8
 
-conclusion -> increasing decoder_lr to 4e-5 =
+conclusion -> no obvious benefit at 4e-5
 
 Experiment 11: 🗸 (one of the best. Indicates that decoder_lr=5e-5 may be the best hyper for this. Is it repeatable?)
     - CV =  0.8702

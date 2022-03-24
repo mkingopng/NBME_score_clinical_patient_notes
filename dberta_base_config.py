@@ -48,7 +48,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
-OUTPUT_DIR = 'experiment_22_'   # iterate for each experiment
+OUTPUT_DIR = 'experiment_21_'   # iterate for each experiment
 
 """
 CONFIGURATION
@@ -58,16 +58,16 @@ CONFIGURATION
 class CONFIGURATION:
     apex = True
     batch_scheduler = True
-    batch_size = 8  # > 12 reduces CV without meaningful speed increase. 4 improves CV, > 2x time. Use 8 as a benchmark
+    batch_size = 8  # 8 is the sweet spot for testing. 4 epochs for training
     betas = (0.9, 0.999)
     competition = 'NBME'
-    decoder_lr = 2e-5  # try different LRs. started at 2e-5, 3e-5 seems better
+    decoder_lr = 5e-5  # decided
     debug = False
     epochs = 5  # 10 is better. Longer may be better still
     encoder_lr = 2e-5  # try different LRs
     gradient_accumulation_steps = 1
     min_lr = 1e-6  # try different LRs
-    eps = 1e-6
+    eps = 1e-6  # try changing this
     fc_dropout = 0.2  # try different
     max_grad_norm = 1000  # try different
     max_len = 512  # try different
