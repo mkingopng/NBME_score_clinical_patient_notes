@@ -34,6 +34,7 @@ import tokenizers
 import transformers
 from transformers import AutoTokenizer, AutoModel, AutoConfig
 from transformers import get_linear_schedule_with_warmup, get_cosine_schedule_with_warmup
+from DeBERTa import deberta
 
 """
 environmental variables
@@ -47,7 +48,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
-OUTPUT_DIR = 'experiment_14_'   # iterate for each experiment
+OUTPUT_DIR = 'experiment_22_'   # iterate for each experiment
 
 """
 CONFIGURATION
@@ -60,9 +61,9 @@ class CONFIGURATION:
     batch_size = 8  # > 12 reduces CV without meaningful speed increase. 4 improves CV, > 2x time. Use 8 as a benchmark
     betas = (0.9, 0.999)
     competition = 'NBME'
-    decoder_lr = 4e-5  # try different LRs. started at 2e-5, 3e-5 seems better
+    decoder_lr = 2e-5  # try different LRs. started at 2e-5, 3e-5 seems better
     debug = False
-    epochs = 10  # 10 is better. Longer may be better still
+    epochs = 5  # 10 is better. Longer may be better still
     encoder_lr = 2e-5  # try different LRs
     gradient_accumulation_steps = 1
     min_lr = 1e-6  # try different LRs
@@ -70,7 +71,7 @@ class CONFIGURATION:
     fc_dropout = 0.2  # try different
     max_grad_norm = 1000  # try different
     max_len = 512  # try different
-    model = "microsoft/deberta-base"
+    model = 'microsoft/deberta-base'  # deberta  # fix_me
     n_fold = 5  # 5 baseline
     num_cycles = 0.5  # try different
     num_warmup_steps = 0
