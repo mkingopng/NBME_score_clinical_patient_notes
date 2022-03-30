@@ -1,0 +1,14 @@
+program: train.py
+method: random
+metric:
+  goal: minimize
+  name: val_loss
+parameters:
+  dropout:
+    values: [0.15, 0.2, 0.25, 0.3, 0.4]
+  decoder_lr:
+    values: [2e-5, 3e-5, 4e-5, 5e-5]
+  encode_lr:
+    values: [2e-5, 3e-5, 4e-5, 5e-5]
+  decay:
+    values: [1e-5, 1e-6, 1e-7]

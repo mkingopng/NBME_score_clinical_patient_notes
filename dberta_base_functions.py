@@ -747,149 +747,151 @@ train loop
 
 
 def train_loop(folds, fold):
-    """
-
-    :param folds:
-    :param fold:
-    :return:
-    """
-    LOGGER.info(f"========== fold: {fold} training ==========")
-
-    """
-    loader
-    """
-    train_folds = folds[folds['fold'] != fold].reset_index(drop=True)
-    valid_folds = folds[folds['fold'] == fold].reset_index(drop=True)
-    valid_texts = valid_folds['pn_history'].values
-    valid_labels = create_labels_for_scoring(valid_folds)
-
-    train_dataset = TrainDataset(CONFIGURATION, train_folds)
-    valid_dataset = TrainDataset(CONFIGURATION, valid_folds)
-
-    train_loader = DataLoader(train_dataset,
-                              batch_size=CONFIGURATION.batch_size,
-                              shuffle=True,
-                              num_workers=CONFIGURATION.num_workers, pin_memory=True, drop_last=True)
-    valid_loader = DataLoader(valid_dataset,
-                              batch_size=CONFIGURATION.batch_size,
-                              shuffle=False,
-                              num_workers=CONFIGURATION.num_workers, pin_memory=True, drop_last=False)
-
-    """
-    model & optimizer
-    """
-    model = NBMEModel(CONFIGURATION, config_path=None, pretrained=True)
-    torch.save(model.config, OUTPUT_DIR + 'config.pth')
-    model.to(device)
-
-    def get_optimizer_params(model, encoder_lr, decoder_lr, weight_decay=0.0):
+    with wandb.init(config=sweep_config):
         """
-
-        :param model:
-        :param encoder_lr:
-        :param decoder_lr:
-        :param weight_decay:
+    
+        :param folds:
+        :param fold:
         :return:
         """
-        list(model.named_parameters())
-        no_decay = ["bias", "LayerNorm.bias", "LayerNorm.weight"]
-        optimizer_parameters = [
-            {'params': [p for n, p in model.model.named_parameters() if not any(nd in n for nd in no_decay)],
-             'lr': encoder_lr, 'weight_decay': weight_decay},
-            {'params': [p for n, p in model.model.named_parameters() if any(nd in n for nd in no_decay)],
-             'lr': encoder_lr, 'weight_decay': 0.0},
-            {'params': [p for n, p in model.named_parameters() if "model" not in n],
-             'lr': decoder_lr, 'weight_decay': 0.0}
-        ]
-        return optimizer_parameters
+        config = wandb.config
+        LOGGER.info(f"========== fold: {fold} training ==========")
 
-    optimizer_parameters = get_optimizer_params(model,
-                                                encoder_lr=CONFIGURATION.encoder_lr,
-                                                decoder_lr=CONFIGURATION.decoder_lr,
-                                                weight_decay=CONFIGURATION.weight_decay)
-    optimizer = AdamW(
-        optimizer_parameters,
-        lr=CONFIGURATION.encoder_lr,
-        eps=CONFIGURATION.eps,
-        betas=CONFIGURATION.betas
-    )
-
-    """
-    scheduler
-    """
-    def get_scheduler(cfg, optimizer, num_train_steps):
         """
-
-        :param cfg:
-        :param optimizer:
-        :param num_train_steps:
-        :return:
+        loader
         """
-        if cfg.scheduler == 'linear':
-            scheduler = get_linear_schedule_with_warmup(
-                optimizer,
-                num_warmup_steps=cfg.num_warmup_steps,
-                num_training_steps=num_train_steps
-            )
-        elif cfg.scheduler == 'cosine':
-            scheduler = get_cosine_schedule_with_warmup(
-                optimizer,
-                num_warmup_steps=cfg.num_warmup_steps,
-                num_training_steps=num_train_steps,
-                num_cycles=cfg.num_cycles
-            )
-        return scheduler
+        train_folds = folds[folds['fold'] != fold].reset_index(drop=True)
+        valid_folds = folds[folds['fold'] == fold].reset_index(drop=True)
+        valid_texts = valid_folds['pn_history'].values
+        valid_labels = create_labels_for_scoring(valid_folds)
 
-    num_train_steps = int(len(train_folds) / CONFIGURATION.batch_size * CONFIGURATION.epochs)
-    scheduler = get_scheduler(CONFIGURATION, optimizer, num_train_steps)
+        train_dataset = TrainDataset(CONFIGURATION, train_folds)
+        valid_dataset = TrainDataset(CONFIGURATION, valid_folds)
 
-    """
-    loop
-    """
-    criterion = nn.BCEWithLogitsLoss(reduction="none")
+        train_loader = DataLoader(train_dataset,
+                                  batch_size=CONFIGURATION.batch_size,
+                                  shuffle=True,
+                                  num_workers=CONFIGURATION.num_workers, pin_memory=True, drop_last=True)
+        valid_loader = DataLoader(valid_dataset,
+                                  batch_size=CONFIGURATION.batch_size,
+                                  shuffle=False,
+                                  num_workers=CONFIGURATION.num_workers, pin_memory=True, drop_last=False)
 
-    best_score = 0.
+        """
+        model & optimizer
+        """
+        model = NBMEModel(CONFIGURATION, config_path=None, pretrained=True)
+        torch.save(model.config, OUTPUT_DIR + 'config.pth')
+        model.to(device)
 
-    for epoch in range(CONFIGURATION.epochs):
+        def get_optimizer_params(model, encoder_lr, decoder_lr, weight_decay=0.0):
+            """
 
-        start_time = time.time()
+            :param model:
+            :param encoder_lr:
+            :param decoder_lr:
+            :param weight_decay:
+            :return:
+            """
+            list(model.named_parameters())
+            no_decay = ["bias", "LayerNorm.bias", "LayerNorm.weight"]
+            optimizer_parameters = [
+                {'params': [p for n, p in model.model.named_parameters() if not any(nd in n for nd in no_decay)],
+                 'lr': encoder_lr, 'weight_decay': weight_decay},
+                {'params': [p for n, p in model.model.named_parameters() if any(nd in n for nd in no_decay)],
+                 'lr': encoder_lr, 'weight_decay': 0.0},
+                {'params': [p for n, p in model.named_parameters() if "model" not in n],
+                 'lr': decoder_lr, 'weight_decay': 0.0}
+            ]
+            return optimizer_parameters
 
-        # train
-        avg_loss = train_fn(fold, train_loader, model, criterion, optimizer, epoch, scheduler, device)
+        optimizer_parameters = get_optimizer_params(model,
+                                                    encoder_lr=CONFIGURATION.encoder_lr,
+                                                    decoder_lr=CONFIGURATION.decoder_lr,
+                                                    weight_decay=CONFIGURATION.weight_decay)
+        optimizer = AdamW(
+            optimizer_parameters,
+            lr=CONFIGURATION.encoder_lr,
+            eps=CONFIGURATION.eps,
+            betas=CONFIGURATION.betas
+        )
 
-        # eval
-        avg_val_loss, predictions = valid_fn(valid_loader, model, criterion, device)
-        predictions = predictions.reshape((len(valid_folds), CONFIGURATION.max_len))
+        """
+        scheduler
+        """
+        def get_scheduler(cfg, optimizer, num_train_steps):
+            """
 
-        # scoring
-        char_probs = get_char_probs(valid_texts, predictions, CONFIGURATION.tokenizer)
-        results = get_results(char_probs, th=0.5)
-        preds = get_predictions(results)
-        score = get_score(valid_labels, preds)
+            :param cfg:
+            :param optimizer:
+            :param num_train_steps:
+            :return:
+            """
+            if cfg.scheduler == 'linear':
+                scheduler = get_linear_schedule_with_warmup(
+                    optimizer,
+                    num_warmup_steps=cfg.num_warmup_steps,
+                    num_training_steps=num_train_steps
+                )
+            elif cfg.scheduler == 'cosine':
+                scheduler = get_cosine_schedule_with_warmup(
+                    optimizer,
+                    num_warmup_steps=cfg.num_warmup_steps,
+                    num_training_steps=num_train_steps,
+                    num_cycles=cfg.num_cycles
+                )
+            return scheduler
 
-        elapsed = time.time() - start_time
+        num_train_steps = int(len(train_folds) / CONFIGURATION.batch_size * CONFIGURATION.epochs)
+        scheduler = get_scheduler(CONFIGURATION, optimizer, num_train_steps)
 
-        LOGGER.info(
-            f'Epoch {epoch + 1} - avg_train_loss: {avg_loss:.4f} avg_val_loss: {avg_val_loss:.4f} time: {elapsed:.0f}s')
-        LOGGER.info(f'Epoch {epoch + 1} - Score: {score:.4f}')
-        if CONFIGURATION.wandb:
-            wandb.log({f"[fold{fold}] epoch": epoch + 1,
-                       f"[fold{fold}] avg_train_loss": avg_loss,
-                       f"[fold{fold}] avg_val_loss": avg_val_loss,
-                       f"[fold{fold}] score": score})
+        """
+        loop
+        """
+        criterion = nn.BCEWithLogitsLoss(reduction="none")
 
-        if best_score < score:
-            best_score = score
-            LOGGER.info(f'Epoch {epoch + 1} - Save Best Score: {best_score:.4f} Model')
-            torch.save({'model': model.state_dict(),
-                        'predictions': predictions},
-                       OUTPUT_DIR + f"{CONFIGURATION.model.replace('/', '-')}_fold{fold}_best.pth")
+        best_score = 0.
 
-    predictions = torch.load(OUTPUT_DIR + f"{CONFIGURATION.model.replace('/', '-')}_fold{fold}_best.pth",
-                             map_location=torch.device('cpu'))['predictions']
-    valid_folds[[i for i in range(CONFIGURATION.max_len)]] = predictions
+        for epoch in range(CONFIGURATION.epochs):
 
-    torch.cuda.empty_cache()
-    gc.collect()
+            start_time = time.time()
 
-    return valid_folds
+            # train
+            avg_loss = train_fn(fold, train_loader, model, criterion, optimizer, epoch, scheduler, device)
+            wandb.log({"loss": avg_loss, "epoch": epoch})
+            # eval
+            avg_val_loss, predictions = valid_fn(valid_loader, model, criterion, device)
+            predictions = predictions.reshape((len(valid_folds), CONFIGURATION.max_len))
+
+            # scoring
+            char_probs = get_char_probs(valid_texts, predictions, CONFIGURATION.tokenizer)
+            results = get_results(char_probs, th=0.5)
+            preds = get_predictions(results)
+            score = get_score(valid_labels, preds)
+
+            elapsed = time.time() - start_time
+
+            LOGGER.info(
+                f'Epoch {epoch + 1} - avg_train_loss: {avg_loss:.4f} avg_val_loss: {avg_val_loss:.4f} time: {elapsed:.0f}s')
+            LOGGER.info(f'Epoch {epoch + 1} - Score: {score:.4f}')
+            if CONFIGURATION.wandb:
+                wandb.log({f"[fold{fold}] epoch": epoch + 1,
+                           f"[fold{fold}] avg_train_loss": avg_loss,
+                           f"[fold{fold}] avg_val_loss": avg_val_loss,
+                           f"[fold{fold}] score": score})
+
+            if best_score < score:
+                best_score = score
+                LOGGER.info(f'Epoch {epoch + 1} - Save Best Score: {best_score:.4f} Model')
+                torch.save({'model': model.state_dict(),
+                            'predictions': predictions},
+                           OUTPUT_DIR + f"{CONFIGURATION.model.replace('/', '-')}_fold{fold}_best.pth")
+
+        predictions = torch.load(OUTPUT_DIR + f"{CONFIGURATION.model.replace('/', '-')}_fold{fold}_best.pth",
+                                 map_location=torch.device('cpu'))['predictions']
+        valid_folds[[i for i in range(CONFIGURATION.max_len)]] = predictions
+
+        torch.cuda.empty_cache()
+        gc.collect()
+
+        return valid_folds

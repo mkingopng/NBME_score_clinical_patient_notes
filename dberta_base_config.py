@@ -114,3 +114,5 @@ if CONFIGURATION.wandb:
         group=CONFIGURATION.model,
         job_type="train",
     )
+    sweep_id = wandb.sweep(sweep_config, project="nbme_sweeps_testing")
+

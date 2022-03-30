@@ -66,3 +66,4 @@ if __name__ == '__main__':
 
     gc.collect()
     torch.cuda.empty_cache()
+    wandb.agent(sweep_id, train, count=5)

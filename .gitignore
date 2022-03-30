@@ -142,3 +142,4 @@ dmypy.json
 /train/
 /deberta_base_baseline/
 /output_dir/
+/deberta-V3-large/
