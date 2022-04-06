@@ -18,7 +18,7 @@
       <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta-v2-3-fast-tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta_base_baseline" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (NBME)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9 (NBME_score_clinical_patient_notes)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

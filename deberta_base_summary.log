@@ -7,63 +7,297 @@ HyperParameters to test & options
 - min_lr:               2e-5, 3e-5, 4e-5, 5e-5
 
 ################################################################
-deberta-baseline
-    - CV Score = 0.87
-    - n_folds =
-    - n_epochs =
+Set baseline Experiments
+
+Experiment 0: (original settings, to do) 🗸
+    - CV Score = CV = 0.8608
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+Experiment 1: (repeat of original settings) 🗸
+    - CV Score = 0.8608
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+conclusion -> results are repeatable. no randomness.
+
+###########################################################################
+test batch size
+
+Experiment 20:
+    - CV Score = 0.
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 2
+
+Experiment 21:
+    - CV Score = 0.
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 4
+
+Experiment 22: 🗸
+    - CV Score = 0.8642
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+Experiment 23: 🗸
+    - CV Score = 0.8642
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+Experiment 24: 🗸
+    - CV Score = 0.8555
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 16
+
+Experiment 25: 🗸
+    - CV Score = 0.Score: 0.8520
+    - n_folds = 5
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 20
+
+conclusion -> best CV comes from batch size. set testing standard as 8
+
+##############################################################################
+epochs experiments - test effect of increasing epochs
+
+Experiment 30: (to do)
+    - CV Score = 0.8608
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+Experiment 31: (to do)
+    - CV Score = 0.8608
+    - n_folds = 5
+    - n_epochs = 15
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+Experiment 32: (to do)
+    - CV Score = 0.8608
+    - n_folds = 5
+    - n_epochs = 20
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+conclusion -> n_epochs=10 is best for training. (Consider higher once other optimisations are optimized)
+
+##############################################
+Folds
+test the effect of increasing folds on CV
+
+Experiment 33: (to do)
+    - CV Score = 0.
+    - n_folds = 10
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+Experiment 34: (to do)
+    - CV Score = 0.
+    - n_folds = 15
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+Experiment 35: (to do)
+    - CV Score = 0.
+    - n_folds = 20
+    - n_epochs = 5
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 12
+
+###############################################
+TBC scheduler experiments
+
+Experiment : (to do)
+    - CV Score = 0.
+    - n_folds = 5
+    - n_epochs = 10
     - decoder_lr =
     - encoder_lr =
-    - batch_size =
+    - batch_size = 8
+    - scheduler = linear
 
-#################################################################
-deberta-large
+Experiment : (re-run this with epochs = 10)
+    - CV Score = 0.8520
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+    - scheduler = cosine
+
+#####################################################
+Experiment 5: new benchmark 🗸 (to prove more epochs = increased CV)
+    - CV Score = 0.8682
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 2e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+Experiment 6: (repeat)
     - CV Score =
-    - n_folds =
-    - n_epochs =
-    - decoder_lr =
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 2e-5
+    - encoder_lr= 2e-5
+    - batch_size = 8
+
+#####################################################
+decoder_lr experiments (set epochs=10, folds=5, batch_size=8)
+
+Experiment 7: (re-run this)
+    - CV Score = 0.8723
+    - n_folds = 10
+    - n_epochs = 10
+    - decoder_lr = 3e-5
+    - encoder_lr = 2e-5
+    - batch_size = 4
+
+Experiment 8: 🗸
+    - CV Score = 0.8679
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 3e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+conclusion -> increasing decoder_lr to 3e-5 = better CV
+
+Experiment 9: (re-run)
+    - CV Score = 0.
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 4e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+Experiment 10: 🗸
+    - CV Score = 0.8679
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 4e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+conclusion -> no obvious benefit at 4e-5
+
+Experiment 11: 🗸 (one of the best. Indicates that decoder_lr=5e-5 may be the best hyper for this. Is it repeatable?)
+    - CV =  0.8702
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 5e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+Experiment 11-1:
+    - CV =  0.
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 5e-5
+    - encoder_lr = 2e-5
+    - batch_size = 8
+
+conclusion -> decoder_lr=5e-5 is best for this hyper
+
+###################################
+encoder_lr experiements (hold batch size = 8, folds = 5, epochs = 10, decoder_lr=5e-5
+
+experiment 12: (repeat. can this beat 11?)
+    - CV =
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 5e-5
+    - encoder_lr = 3e-5
+    - batch_size = 8
+
+experiment 13: (can this beat 11?)
+    - CV =
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 5e-5
+    - encoder_lr = 4e-5
+    - batch_size = 8
+
+experiment 14: (can this beat 11?)
+    - CV =
+    - n_folds = 5
+    - n_epochs = 10
+    - decoder_lr = 5e-5
+    - encoder_lr = 5e-5
+    - batch_size = 8
+
+###################################################
+min_lr experiments
+
+experiment 15:
+
+experiment 16:
+
+experiment 18:
+
+conclusions ->
+
+
+experiment 25
+
+####################################################
+
+conclusions:
+    - 10+ epochs delivers better performance. 10 is enough for a training baseline. greater should be used for final training
+    - 10 folds gives better performance
+    - batch size 4 gives better performance, but impractical for testing. stick to 8 for testing
+    - decoder_lr = 5e-5 performs best
     - encoder_lr =
-    - batch_size =
-
-#################################################################
-deberta-v2-xl
-    - CV Score =
-    - n_folds =
-    - n_epochs =
-    - decoder_lr =
-    - encoder_lr =
-    - batch_size =
-
-#################################################################
-deberta-v3-large
-    - CV Score =
-    - n_folds =
-    - n_epochs =
-    - decoder_lr =
-    - encoder_lr =
-    - batch_size =
-
-#################################################################
-roberta-large
-    - CV Score =
-    - n_folds =
-    - n_epochs =
-    - decoder_lr =
-    - encoder_lr =
-    - batch_size =
-
-#################################################################
-t5
-    - CV Score =
-    - n_folds =
-    - n_epochs =
-    - decoder_lr =
-    - encoder_lr =
-    - batch_size =
-
-##################################################################
-
+    - min_lr =
+    - scheduler =
 
 ###########################################
+
+Other Hyperparameters to optimize (should we attempt to optimize these?)
+    - eps
+    'microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext', -> trained on medical corpus
+
+
+    - fc_dropout
+    - max_grad_norm
+    - max_len
+    - num_cycles
+    - num_warm_up_steps
+    - num_workers
+    - seed
 
 
 ######################
@@ -74,8 +308,10 @@ all_models = [
     'distilbert_v1,
     'distilbert_v2,
     'dislitbert_v3'
+
     'albert-base-v2',
     'google/electra-base-discriminator',
+    ''
     'roberta-base'
     'roberta-large
 # ]

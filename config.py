@@ -47,7 +47,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
-OUTPUT_DIR = 'deberta_base_'   # iterate for each experiment
+OUTPUT_DIR = 'deberta_large_'   # iterate for each experiment
 
 """
 CONFIGURATION
@@ -57,7 +57,7 @@ CONFIGURATION
 class CONFIGURATION:
     apex = True
     batch_scheduler = True
-    batch_size = 4  # 8 is the sweet spot for testing. 4 for training
+    batch_size = 1
     betas = (0.9, 0.999)
     competition = 'NBME'
     decoder_lr = 3e-5
@@ -70,7 +70,7 @@ class CONFIGURATION:
     fc_dropout = 0.2  # try different
     max_grad_norm = 1000  # try different
     max_len = 512  # try different
-    model = 'microsoft/deberta-base'  # deberta base, deberta large, roberta, t5, bert,
+    model = 'microsoft/deberta-large'  # deberta base, deberta large, roberta, t5, bert,
     n_fold = 10  # 5 baseline
     num_cycles = 0.5  # try different
     num_warmup_steps = 0
