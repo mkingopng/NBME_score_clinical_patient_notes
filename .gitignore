@@ -143,3 +143,5 @@ dmypy.json
 /deberta_base_baseline/
 /output_dir/
 /deberta-V3-large/
+/input/
+/kaggle/

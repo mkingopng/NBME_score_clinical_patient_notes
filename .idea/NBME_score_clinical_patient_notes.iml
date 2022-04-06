@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/data" />
+      <excludeFolder url="file://$MODULE_DIR$/t" />
+      <excludeFolder url="file://$MODULE_DIR$/db_v2_3_fast_tokenizer" />
+      <excludeFolder url="file://$MODULE_DIR$/deberta_v2" />
+      <excludeFolder url="file://$MODULE_DIR$/notebooks" />
+      <excludeFolder url="file://$MODULE_DIR$/eda" />
+      <excludeFolder url="file://$MODULE_DIR$/inference" />
+      <excludeFolder url="file://$MODULE_DIR$/train" />
+      <excludeFolder url="file://$MODULE_DIR$/output_dir" />
+      <excludeFolder url="file://$MODULE_DIR$/deberta_large" />
+      <excludeFolder url="file://$MODULE_DIR$/kaggle/input" />
+      <excludeFolder url="file://$MODULE_DIR$/kaggle" />
+      <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta-V3-large" />
+      <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta-v2-3-fast-tokenizer" />
+      <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta_base_baseline" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.9 (NBME)" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
