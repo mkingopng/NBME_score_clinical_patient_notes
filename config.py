@@ -47,7 +47,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
-OUTPUT_DIR = 'deberta_large_experiment_1_'   # iterate for each experiment
+OUTPUT_DIR = 'deberta_base_'   # iterate for each experiment
 
 """
 CONFIGURATION
@@ -60,9 +60,9 @@ class CONFIGURATION:
     batch_size = 4  # 8 is the sweet spot for testing. 4 for training
     betas = (0.9, 0.999)
     competition = 'NBME'
-    decoder_lr = 2e-5
+    decoder_lr = 3e-5
     debug = False
-    epochs = 5  # 10 is better. Longer may be better still
+    epochs = 10  # 10 is better. Longer may be better still
     encoder_lr = 2e-5  # try different LRs
     gradient_accumulation_steps = 1
     min_lr = 1e-6  # try different LRs
@@ -70,8 +70,8 @@ class CONFIGURATION:
     fc_dropout = 0.2  # try different
     max_grad_norm = 1000  # try different
     max_len = 512  # try different
-    model = 'microsoft/deberta-large'  # deberta base, deberta large, roberta, t5, bert,
-    n_fold = 5  # 5 baseline
+    model = 'microsoft/deberta-base'  # deberta base, deberta large, roberta, t5, bert,
+    n_fold = 10  # 5 baseline
     num_cycles = 0.5  # try different
     num_warmup_steps = 0
     num_workers = 4  # try different
@@ -113,5 +113,5 @@ if CONFIGURATION.wandb:
         group=CONFIGURATION.model,
         job_type="train",
     )
-    sweep_id = wandb.sweep(sweep_config, project="nbme_sweeps_testing")
+    # sweep_id = wandb.sweep(sweep_config, project="nbme_sweeps_testing")
 

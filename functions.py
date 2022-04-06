@@ -747,7 +747,7 @@ train loop
 
 
 def train_loop(folds, fold):
-    with wandb.init(config=sweep_config):
+    with wandb.init(config=train_config):  # todo: chnage to sweep_config for sweeps
         """
     
         :param folds:
