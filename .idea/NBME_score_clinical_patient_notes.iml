@@ -10,15 +10,15 @@
       <excludeFolder url="file://$MODULE_DIR$/eda" />
       <excludeFolder url="file://$MODULE_DIR$/inference" />
       <excludeFolder url="file://$MODULE_DIR$/train" />
-      <excludeFolder url="file://$MODULE_DIR$/output_dir" />
       <excludeFolder url="file://$MODULE_DIR$/deberta_large" />
       <excludeFolder url="file://$MODULE_DIR$/kaggle/input" />
       <excludeFolder url="file://$MODULE_DIR$/kaggle" />
       <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta-V3-large" />
       <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta-v2-3-fast-tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta_base_baseline" />
+      <excludeFolder url="file://$MODULE_DIR$/kaggle/checkpoints_dir" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (NBME_score_clinical_patient_notes)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9 (NBME)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

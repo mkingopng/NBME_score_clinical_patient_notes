@@ -44,6 +44,7 @@ as per chase bowers but improved.
 - decoding
 
 # My strategy?
+iterate through the top models & naive ensemble
 
 ## simplify my structure & use the API
 - do what 2nd place did and mirror Kaggle's directory structure locally & in docker
@@ -62,25 +63,36 @@ some workload to AWS. I can get EC2 G4 instances from a couple of bucks an hour.
 to use multi-gpu, and how to run code on AWS.
 
 ## models -> on what basis am I selecting models?
-
-
-- Bert: 
+I don't need both the pretrained model and the fine-tuned checkpoints. I just need to the pretrained model for inference
+- BERT: 
 - deberta-large: improves BERT and RoBERTa using disentangled attention and enhanced mask encoder
 - deberta-v2: improvements
 - deberta-v3: further improvements
 - T5: 
 - Roberta-large: pretrained using masked langauge modeling
+- distilbert: 
+
+# need to score on kaggle
+# need to build the scaffold
+# need enough diversity in models
+# what does it mean when people talk about head, back-bone, headless etc?
+# fully connected to the last layer
+# output layer is the head. the last layer is the vector
+# the backbone is the fundamental model
+# you can remove the individual output layer
 
 ## optimize HPs for each model & train model
 - use WandB sweeps to optimise HPs
 - run both GPUs constantly
 - consider using AWS for training & optimisation once the script is working
-- need to learn how to use docker to make AWS viable
+- need to learn how to use sagemaker/docker to make AWS viable
 
 ## ensemble method
-- weighted box fusion approach?
-- 
-- what do you think?
+- looks like 1st place is basically a naive approach. read the code
+- weighted box fusion approach? what is this?
+- don't do the bayesian thing
+
+## post-processing
 
 ## LGB for optimising ... something?
-- 
+- optimizing the prediction threshold?

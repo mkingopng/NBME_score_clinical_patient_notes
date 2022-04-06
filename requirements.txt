@@ -106,7 +106,7 @@ joblib==1.1.0
     #   nltk
     #   sacremoses
     #   scikit-learn
-jsonpickle==1.2
+jsonpickle==1.5.2
     # via sacred
 kiwisolver==1.4.2
     # via matplotlib
