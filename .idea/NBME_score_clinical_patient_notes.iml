@@ -16,7 +16,8 @@
       <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta-V3-large" />
       <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta-v2-3-fast-tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/kaggle/deberta_base_baseline" />
-      <excludeFolder url="file://$MODULE_DIR$/kaggle/checkpoints_dir" />
+      <excludeFolder url="file://$MODULE_DIR$/research" />
+      <excludeFolder url="file://$MODULE_DIR$/kaggle/input/checkpoints" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (NBME)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
