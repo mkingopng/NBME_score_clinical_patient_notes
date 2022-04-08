@@ -31,7 +31,7 @@ from torch.optim import Adam, SGD, AdamW
 from torch.utils.data import DataLoader, Dataset
 # import models_and_tokenizers
 import transformers
-from transformers import AutoTokenizer, AutoModel, AutoConfig
+from transformers import AutoTokenizer, AutoModel, AutoConfig, T5TokenizerFast, DebertaTokenizerFast
 from transformers import get_linear_schedule_with_warmup, get_cosine_schedule_with_warmup
 from huggingface_hub import hf_hub_download
 from transformers import AutoModelForSeq2SeqLM
@@ -49,7 +49,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
-OUTPUT_DIR = 'checkpoints_'   # heading: iterate for each experiment
+OUTPUT_DIR = 'checkpoints_'  # heading: iterate for each experiment
 
 """
 CONFIGURATION
@@ -72,7 +72,7 @@ class CONFIGURATION:
     fc_dropout = 0.2
     max_grad_norm = 1000
     max_len = 512
-    model = 'roberta-large'  # heading: deberta large, deberta v2 large, Deberta v3 large, roberta-large, t5,
+    model = 'bert-base-uncased'
     n_fold = 5
     num_cycles = 0.5
     num_warmup_steps = 0
@@ -92,9 +92,9 @@ class Checkpoints:
     # deberta_base_checkpoints = 'kaggle/inputs/checkpoints/deberta_base'
     # deberta_large_checkpoints = 'kaggle/inputs/checkpoints/deberta_large'
     # deberta_v2_checkpoints = 'kaggle/inputs/checkpoints/deberta_v2'
-    # deberta_v3_checkpoints = 'kaggle/inputs/checkpoints/deberta_v3'
-    # roberta_base_checkpoints = 'kaggle/inputs/checkpoints//roberta_base'
-    roberta_large_checkpoints = 'kaggle/inputs/checkpoints/roberta_large'
+    deberta_v3_checkpoints = 'kaggle/inputs/checkpoints/deberta_v3'
+    # roberta_base_checkpoints = 'kaggle/inputs/checkpoints/roberta_base'
+    # roberta_large_checkpoints = 'kaggle/inputs/checkpoints/roberta_large'
     # t5_checkpoints = 'kaggle/inputs/checkpoints/t5'
     # bert_base_uncased_checkpoints = 'kaggle/inputs/checkpoints/bert_base_uncased'
     # distilgpt2_checkpoints = "kaggle/inputs/checkpoints/distilgpt2"
@@ -106,23 +106,39 @@ class Model:
     # deberta_v2_xlarge_model = AutoModel.from_pretrained('kaggle/input/models/deberta_v2_xlarge_model')
     # deberta_v3_large_model = AutoModel.from_pretrained('kaggle/input/models/deberta_v3_large_model')
     # roberta_base_model = AutoModel.from_pretrained('kaggle/input/models/roberta_base_model')
-    roberta_large_model = AutoModel.from_pretrained('kaggle/input/models/roberta_large_model')
+    # roberta_large_model = AutoModel.from_pretrained('kaggle/input/models/roberta_large_model')
     # t5_base_model = AutoModel.from_pretrained("kaggle/input/models/t5_base_tokenizer")
     # t5_large_model = AutoModel.from_pretrained("kaggle/input/models/t5_large_tokenizer")
-    # bert_base_uncased_model = AutoModel.from_pretrained("kaggle/input/models/bert_base_uncased_model")
+    bert_base_uncased_model = AutoModel.from_pretrained("kaggle/input/models/bert_base_uncased_model")
     # distilpgt2_model = AutoModel.from_pretrained("kaggle/input/models/distilgpt2_model")
 
 
 class Tokenizer:
     # deberta_base_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/bert_base_uncased_tokenizer"),
     # deberta_large_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/deberta_large_tokenizer"),
-    # deberta_v2_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/deberta_v2_xlarge_tokenizer"),
-    # deberta_v3_large_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/deberta_v3_large_tokenizer"),
+    # deberta_v2_tokenizer = T5TokenizerFast("T5"),
+    # deberta_v3_large_tokenizer = DebertaTokenizerFast(
+    #                                         vocab_file=,
+    #                                          tokenizer_file=,
+    #                                          eos_token=,
+    #                                          unk_token=,
+    #                                          pad_token=,
+    #                                          extra_ids=,
+    #                                          additional_special_tokens=,
+    #                                          ),
     # roberta_base_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/roberta_base_tokenizer"),
-    roberta_large_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/roberta_large_tokenizer")
+    # roberta_large_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/roberta_large_tokenizer")
     # t5_base_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/t5_base_tokenizer"),
-    # t5_large_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/t5_large_tokenizer"),
-    # bert_base_uncased_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/bert_base_uncased_tokenizer"),
+    # t5_large_tokenizer = T5TokenizerFast(vocab_file=,
+    #                                      do_lower_case=,
+    #                                      unk_token=,
+    #                                      sep_token=,
+    #                                      pad_token=,
+    #                                      cls_token=,
+    #                                      mask_token=,
+    #                                      ),
+    bert_base_uncased_tokenizer = AutoTokenizer.from_pretrained(
+        "kaggle/input/tokenizers/bert_base_uncased_tokenizer"),
     # distilgpt2_tokenizer = AutoTokenizer.from_pretrained("kaggle/input/tokenizers/distilgpt2_tokenizer")
 
 
@@ -130,13 +146,13 @@ if CONFIGURATION.debug:
     CONFIGURATION.epochs = 2
     CONFIGURATION.trn_fold = [0]
 
-
 """
 wandb
 """
 
 if CONFIGURATION.wandb:
     wandb.login(key=API_KEY)
+
 
     def class2dict(f):
         """
@@ -146,6 +162,7 @@ if CONFIGURATION.wandb:
         """
         return dict((name, getattr(f, name)) for name in dir(f) if not name.startswith('__'))
 
+
     run = wandb.init(
         project=CONFIGURATION.competition,
         name=CONFIGURATION.model,
@@ -154,4 +171,3 @@ if CONFIGURATION.wandb:
         job_type="train",
     )
     # sweep_id = wandb.sweep(sweep_config, project="nbme_sweeps_testing")
-
