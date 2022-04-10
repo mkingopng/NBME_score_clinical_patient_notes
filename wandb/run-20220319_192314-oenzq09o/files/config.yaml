@@ -1,0 +1,127 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.11
+    framework: huggingface
+    huggingface_version: 4.11.3
+    is_jupyter_run: false
+    is_kaggle_kernel: true
+    python_version: 3.9.7
+    start_time: 1647681794
+    t:
+      1:
+      - 1
+      - 5
+      - 11
+      - 49
+      2:
+      - 1
+      - 5
+      - 11
+      - 49
+      3:
+      - 2
+      - 13
+      - 16
+      4: 3.9.7
+      5: 0.12.11
+      6: 4.11.3
+      8:
+      - 2
+      - 5
+_wandb_kernel:
+  desc: null
+  value: mkingo
+apex:
+  desc: null
+  value: 'true'
+batch_scheduler:
+  desc: null
+  value: 'false'
+batch_size:
+  desc: null
+  value: 37
+betas:
+  desc: null
+  value:
+  - 0.9
+  - 0.999
+competition:
+  desc: null
+  value: NBME
+debug:
+  desc: null
+  value: 'true'
+decoder_lr:
+  desc: null
+  value: 1.185631742616114e-05
+encoder_lr:
+  desc: null
+  value: 2.125652071667572e-05
+epochs:
+  desc: null
+  value: 8
+eps:
+  desc: null
+  value: 1.936830368938539e-06
+fc_dropout:
+  desc: null
+  value: 0.3707278669535794
+gradient_accumulation_steps:
+  desc: null
+  value: 2
+max_grad_norm:
+  desc: null
+  value: 1993
+max_len:
+  desc: null
+  value: 466
+min_lr:
+  desc: null
+  value: 5.101527310985505e-07
+model:
+  desc: null
+  value: microsoft/deberta-base
+n_fold:
+  desc: null
+  value: 5
+num_cycles:
+  desc: null
+  value: 0.8987549558966671
+num_warmup_steps:
+  desc: null
+  value: 0
+num_workers:
+  desc: null
+  value: 2
+print_freq:
+  desc: null
+  value: 159
+scheduler:
+  desc: null
+  value: cosine
+seed:
+  desc: null
+  value: 38
+tokenizer:
+  desc: null
+  value: normalized=True)})
+train:
+  desc: null
+  value: 'false'
+trn_fold:
+  desc: null
+  value:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+wandb:
+  desc: null
+  value: 'true'
+weight_decay:
+  desc: null
+  value: 0.013391424190934482

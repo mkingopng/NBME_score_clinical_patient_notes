@@ -1,0 +1,136 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.11
+    framework: huggingface
+    huggingface_version: 4.11.3
+    is_jupyter_run: false
+    is_kaggle_kernel: true
+    python_version: 3.9.7
+    start_time: 1648547300
+    t:
+      1:
+      - 1
+      - 5
+      - 11
+      - 49
+      2:
+      - 1
+      - 5
+      - 11
+      - 49
+      3:
+      - 13
+      - 16
+      4: 3.9.7
+      5: 0.12.11
+      6: 4.11.3
+      8:
+      - 2
+      - 5
+_wandb_kernel:
+  desc: null
+  value: mkingo
+apex:
+  desc: null
+  value: true
+batch_scheduler:
+  desc: null
+  value: true
+batch_size:
+  desc: null
+  value: 4
+betas:
+  desc: null
+  value:
+  - 0.9
+  - 0.999
+competition:
+  desc: null
+  value: NBME
+debug:
+  desc: null
+  value: false
+decoder_lr:
+  desc: null
+  value: 2.0e-05
+encoder_lr:
+  desc: null
+  value: 3.0e-05
+epochs:
+  desc: null
+  value: 10
+eps:
+  desc: null
+  value: 1.0e-06
+fc_dropout:
+  desc: null
+  value: 0.2
+gradient_accumulation_steps:
+  desc: null
+  value: 1
+max_grad_norm:
+  desc: null
+  value: 1000
+max_len:
+  desc: null
+  value: 512
+min_lr:
+  desc: null
+  value: 1.0e-06
+model:
+  desc: null
+  value: microsoft/deberta-large
+n_fold:
+  desc: null
+  value: 5
+num_cycles:
+  desc: null
+  value: 0.5
+num_warmup_steps:
+  desc: null
+  value: 0
+num_workers:
+  desc: null
+  value: 4
+print_freq:
+  desc: null
+  value: 100
+scheduler:
+  desc: null
+  value: cosine
+seed:
+  desc: null
+  value: 42
+tokenizer:
+  desc: null
+  value: 'PreTrainedTokenizerFast(name_or_path=''microsoft/deberta-large'', vocab_size=50265,
+    model_max_len=512, is_fast=True, padding_side=''right'', special_tokens={''bos_token'':
+    AddedToken("[CLS]", rstrip=False, lstrip=False, single_word=False, normalized=True),
+    ''eos_token'': AddedToken("[SEP]", rstrip=False, lstrip=False, single_word=False,
+    normalized=True), ''unk_token'': AddedToken("[UNK]", rstrip=False, lstrip=False,
+    single_word=False, normalized=True), ''sep_token'': AddedToken("[SEP]", rstrip=False,
+    lstrip=False, single_word=False, normalized=True), ''pad_token'': AddedToken("[PAD]",
+    rstrip=False, lstrip=False, single_word=False, normalized=True), ''cls_token'':
+    AddedToken("[CLS]", rstrip=False, lstrip=False, single_word=False, normalized=True),
+    ''mask_token'': AddedToken("[MASK]", rstrip=False, lstrip=True, single_word=False,
+    normalized=True)})'
+train:
+  desc: null
+  value: true
+trn_fold:
+  desc: null
+  value:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+wandb:
+  desc: null
+  value: true
+weight_decay:
+  desc: null
+  value: 0.01

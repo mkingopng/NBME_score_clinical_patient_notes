@@ -1,0 +1,24 @@
+{
+    "os": "Linux-5.16.11-76051611-generic-x86_64-with-glibc2.34",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-03-28T03:24:49.270721",
+    "startedAt": "2022-03-28T03:24:48.217273",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "cpu_count": 32,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/noone/Documents/GitHub/NBME_score_clinical_patient_notes/dberta_base_train.py",
+    "codePath": "dberta_base_train.py",
+    "git": {
+        "remote": "https://github.com/mkingopng/NBME_score_clinical_patient_notes.git",
+        "commit": "8005291da773239ce84c25b328a577433b9e4d23"
+    },
+    "email": "71872141+mkingopng@users.noreply.github.com",
+    "root": "/home/noone/Documents/GitHub/NBME_score_clinical_patient_notes",
+    "host": "pop-os",
+    "username": "noone",
+    "executable": "/home/noone/anaconda3/envs/NBME/bin/python"
+}

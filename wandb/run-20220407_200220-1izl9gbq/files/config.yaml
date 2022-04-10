@@ -1,0 +1,136 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.12
+    framework: huggingface
+    huggingface_version: 4.14.1
+    is_jupyter_run: false
+    is_kaggle_kernel: true
+    python_version: 3.9.11
+    start_time: 1649325740
+    t:
+      1:
+      - 1
+      - 5
+      - 11
+      - 49
+      - 53
+      - 55
+      2:
+      - 1
+      - 5
+      - 11
+      - 49
+      - 53
+      - 55
+      3:
+      - 2
+      - 13
+      - 16
+      - 24
+      4: 3.9.11
+      5: 0.12.12
+      6: 4.14.1
+      8:
+      - 2
+      - 5
+_wandb_kernel:
+  desc: null
+  value: mkingo
+apex:
+  desc: null
+  value: true
+batch_scheduler:
+  desc: null
+  value: true
+batch_size:
+  desc: null
+  value: 4
+betas:
+  desc: null
+  value:
+  - 0.9
+  - 0.999
+competition:
+  desc: null
+  value: NBME
+debug:
+  desc: null
+  value: false
+decoder_lr:
+  desc: null
+  value: 3.0e-05
+encoder_lr:
+  desc: null
+  value: 2.0e-05
+epochs:
+  desc: null
+  value: 5
+eps:
+  desc: null
+  value: 1.0e-06
+fc_dropout:
+  desc: null
+  value: 0.2
+gradient_accumulation_steps:
+  desc: null
+  value: 1
+max_grad_norm:
+  desc: null
+  value: 1000
+max_len:
+  desc: null
+  value: 512
+min_lr:
+  desc: null
+  value: 1.0e-06
+model:
+  desc: null
+  value: roberta-large
+n_fold:
+  desc: null
+  value: 5
+num_cycles:
+  desc: null
+  value: 0.5
+num_warmup_steps:
+  desc: null
+  value: 0
+num_workers:
+  desc: null
+  value: 4
+print_freq:
+  desc: null
+  value: 100
+scheduler:
+  desc: null
+  value: cosine
+seed:
+  desc: null
+  value: 42
+tokenizer:
+  desc: null
+  value: 'PreTrainedTokenizerFast(name_or_path=''roberta-large'', vocab_size=50265,
+    model_max_len=512, is_fast=True, padding_side=''right'', special_tokens={''bos_token'':
+    ''<s>'', ''eos_token'': ''</s>'', ''unk_token'': ''<unk>'', ''sep_token'': ''</s>'',
+    ''pad_token'': ''<pad>'', ''cls_token'': ''<s>'', ''mask_token'': AddedToken("<mask>",
+    rstrip=False, lstrip=True, single_word=False, normalized=False)})'
+train:
+  desc: null
+  value: true
+trn_fold:
+  desc: null
+  value:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+wandb:
+  desc: null
+  value: true
+weight_decay:
+  desc: null
+  value: 0.01

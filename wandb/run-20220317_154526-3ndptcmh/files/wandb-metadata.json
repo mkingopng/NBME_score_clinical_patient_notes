@@ -1,0 +1,24 @@
+{
+    "os": "Linux-5.16.11-76051611-generic-x86_64-with-glibc2.34",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-03-17T05:45:27.121604",
+    "startedAt": "2022-03-17T05:45:26.162113",
+    "docker": null,
+    "cpu_count": 32,
+    "cuda": null,
+    "args": [
+        "-f",
+        "/home/noone/.local/share/jupyter/runtime/kernel-f9b8e461-a09e-49d9-a921-890d7298e329.json"
+    ],
+    "state": "running",
+    "program": "train-deberta-v3-large-baseline.ipynb",
+    "root": "/home/noone/Documents/GitHub/NBME_score_clinical_patient_notes",
+    "git": {
+        "remote": "https://github.com/mkingopng/NBME_score_clinical_patient_notes.git",
+        "commit": "38b761e91aaf2df3ef38aa2a6d6fa1c130fb2d25"
+    },
+    "email": "71872141+mkingopng@users.noreply.github.com",
+    "host": "pop-os",
+    "username": "noone",
+    "executable": "/home/noone/anaconda3/envs/NBME/bin/python"
+}

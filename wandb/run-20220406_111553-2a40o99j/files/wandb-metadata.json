@@ -1,0 +1,22 @@
+{
+    "os": "Linux-5.16.15-76051615-generic-x86_64-with-glibc2.34",
+    "python": "3.9.11",
+    "heartbeatAt": "2022-04-06T01:15:54.308394",
+    "startedAt": "2022-04-06T01:15:53.350007",
+    "docker": null,
+    "cpu_count": 32,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/noone/Documents/GitHub/NBME_score_clinical_patient_notes/config.py",
+    "codePath": "config.py",
+    "git": {
+        "remote": "https://github.com/mkingopng/NBME_score_clinical_patient_notes.git",
+        "commit": "4ca9816be2665d7585ab0d168376a340aa800088"
+    },
+    "email": "71872141+mkingopng@users.noreply.github.com",
+    "root": "/home/noone/Documents/GitHub/NBME_score_clinical_patient_notes",
+    "host": "pop-os",
+    "username": "noone",
+    "executable": "/home/noone/anaconda3/envs/NBME/bin/python"
+}

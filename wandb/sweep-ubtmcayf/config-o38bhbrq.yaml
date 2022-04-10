@@ -1,0 +1,54 @@
+wandb_version: 1
+
+_wandb_kernel:
+  value: mkingo
+apex:
+  value: 'false'
+batch_scheduler:
+  value: 'true'
+batch_size:
+  value: 44
+competition:
+  value: NBME
+debug:
+  value: 'true'
+decoder_lr:
+  value: 1.867453093252203e-05
+encoder_lr:
+  value: 2.2293939274503985e-05
+epochs:
+  value: 14
+eps:
+  value: 2.824149888670355e-06
+fc_dropout:
+  value: 0.15567078582665533
+gradient_accumulation_steps:
+  value: 2
+max_grad_norm:
+  value: 1407
+max_len:
+  value: 1887
+min_lr:
+  value: 1.6252733271031551e-06
+model:
+  value: microsoft/deberta-base
+n_fold:
+  value: 20
+num_cycles:
+  value: 0.7849763926542664
+num_workers:
+  value: 4
+print_freq:
+  value: 273
+scheduler:
+  value: cosine
+seed:
+  value: 98
+tokenizer:
+  value: '''pad_token'': AddedToken(\[PAD]\'
+train:
+  value: 'true'
+wandb:
+  value: 'true'
+weight_decay:
+  value: 0.013465404568888367

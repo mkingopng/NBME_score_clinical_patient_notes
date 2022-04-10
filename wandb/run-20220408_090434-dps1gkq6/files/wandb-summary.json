@@ -1,0 +1,1 @@
+{"[fold0] loss": 0.002514307154342532, "[fold0] lr": 0.0, "_timestamp": 1649373639, "_runtime": 965, "_step": 14309, "loss": 0.007827005644817227, "epoch": 4, "[fold0] epoch": 5, "[fold0] avg_train_loss": 0.007827005644817227, "[fold0] avg_val_loss": 0.02341439323635905, "[fold0] score": 0.7091325163349492, "_wandb": {"runtime": 966}}

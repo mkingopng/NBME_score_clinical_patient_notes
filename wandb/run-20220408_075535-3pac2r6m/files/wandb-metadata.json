@@ -1,0 +1,24 @@
+{
+    "os": "Linux-5.16.15-76051615-generic-x86_64-with-glibc2.34",
+    "python": "3.9.11",
+    "heartbeatAt": "2022-04-07T21:55:36.376777",
+    "startedAt": "2022-04-07T21:55:35.244505",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "cpu_count": 32,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/noone/Documents/GitHub/NBME_score_clinical_patient_notes/train.py",
+    "codePath": "train.py",
+    "git": {
+        "remote": "https://github.com/mkingopng/NBME_score_clinical_patient_notes.git",
+        "commit": "95f502ae838c6bef26f55cafa498f393cb63d6f4"
+    },
+    "email": "71872141+mkingopng@users.noreply.github.com",
+    "root": "/home/noone/Documents/GitHub/NBME_score_clinical_patient_notes",
+    "host": "pop-os",
+    "username": "noone",
+    "executable": "/home/noone/anaconda3/envs/NBME/bin/python"
+}

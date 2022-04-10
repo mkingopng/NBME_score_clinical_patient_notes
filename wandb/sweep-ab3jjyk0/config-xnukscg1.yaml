@@ -1,0 +1,12 @@
+wandb_version: 1
+
+decoder_lr:
+  value: 4.980038128480129e-05
+encoder_lr:
+  value: 5.642643091073202e-05
+eps:
+  value: 9.632251314502469e-07
+fc_dropout:
+  value: 0.3890428029125993
+min_lr:
+  value: 1.1680931670898011e-06
